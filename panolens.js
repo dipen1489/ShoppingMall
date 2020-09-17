@@ -4401,7 +4401,7 @@
 					
 	                if ( obj.loaded ) {
 
-	                    obj.fadeIn( 1 );
+	                    obj.fadeIn( duration );
 						viewer.setCameraFov(60);
 
 	                } else {
@@ -4469,7 +4469,7 @@
 	                 */
 	                this.dispatchEvent( { type: 'leave-start' } );
 
-	                this.fadeOut( 1 );
+	                this.fadeOut( duration );
 	                this.toggleInfospotVisibility( false );
 
 	            }.bind( this ) )
