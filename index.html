@@ -1,0 +1,103 @@
+<html>
+<head>
+	<style>
+		body{
+			margin: 0;
+		}
+		canvas{
+			width: 100%;
+			height: 100%
+		}
+	</style>
+	<script src='three.min.js'></script>
+	<script src='panolens.js'></script>
+	<!--<script src='VRButton.js'></script>
+	<script src='main.js'></script>-->
+	<style>
+      html, body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: #000;
+      }
+
+      #panolens-separate-container {
+        position: absolute;
+        width: 300px;
+        height: 150px;
+        right: 0;
+        top: 100px;
+      }
+
+      #panolens-separate-container:-webkit-full-screen{
+        left: 0;
+        top: 0;
+      }
+      #panolens-separate-container:-moz-full-screen{
+        left: 0;
+        top: 0;
+      }
+      #panolens-separate-container:-ms-fullscreen{
+        left: 0;
+        top: 0;
+      }
+      #panolens-separate-container:fullscreen {
+        left: 0;
+        top: 0;
+      }
+    </style>
+	
+	
+</head>
+<body>
+
+<script>
+
+	const panorama1 = new PANOLENS.ImagePanorama( 'img2.jpeg' );
+	const panorama2 = new PANOLENS.ImagePanorama( 'img3.jpeg' );
+	const panorama3 = new PANOLENS.ImagePanorama( 'img4.jpeg' );
+	const panorama4 = new PANOLENS.ImagePanorama( 'img5.jpeg' );
+	const panorama5 = new PANOLENS.ImagePanorama( 'img6.jpeg' );
+	
+	const viewer = new PANOLENS.Viewer({ enableReticle: false, output: 'console', viewIndicator: true, autoRotate: false, autoRotateSpeed: 2, autoRotateActivationDuration: 5000, dwellTime: 1000 ,cameraFov : 60});
+	viewer.add( panorama4 );
+	viewer.add( panorama2 );
+	viewer.add( panorama3 );
+	viewer.add( panorama1 );
+	viewer.add( panorama5 );
+	
+	panorama1.setLinkingImage('./icon3.png',400);
+	panorama2.setLinkingImage('./icon3.png',400);
+	panorama3.setLinkingImage('./icon3.png',400);
+	panorama4.setLinkingImage('./icon3.png',400);
+	panorama5.setLinkingImage('./icon3.png',400);
+	
+	panorama4.link( panorama1, new THREE.Vector3( 4940.43, -697.74, 152.71 ));
+	panorama1.link( panorama3, new THREE.Vector3( 3813.58, -507.79, -3178.66 ));
+	panorama3.link( panorama1, new THREE.Vector3( -2712.64, -704.11, -4129.74 ));
+	panorama1.link( panorama5, new THREE.Vector3( 4005.01, -522.60, 2939.48 ));
+	panorama5.link( panorama1, new THREE.Vector3( -2642.63, -717.95, 4173.26 ));
+	panorama1.link( panorama2, new THREE.Vector3( 4967.75, 240.75, -434.82 ));
+	panorama2.link( panorama3, new THREE.Vector3( 2072.27, -682.25, 4492.33 ));
+	
+	function requestOrientation()
+	{
+		if (typeof DeviceMotionEvent.requestPermission === 'function') {
+	    DeviceMotionEvent.requestPermission()
+		.then(response => {
+		  if (response == 'granted') {
+			window.addEventListener('devicemotion', (e) => {
+			  // do something with e
+			})
+		  }
+		})
+		.catch(console.error)
+		} else {
+		  // non iOS 13+
+		}
+	}
+	
+</script>
+</body>
+</html>
