@@ -9,8 +9,9 @@
 			height: 100%
 		}
 	</style>
-	<script src='three.min.js'></script>
-	<script src='panolens.js'></script>
+	<script src='./js/jQuery.min.js'></script>
+	<script src='./js/three.min.js'></script>
+	<script src='./js/panolens.js'></script>
 	<!--<script src='VRButton.js'></script>
 	<script src='main.js'></script>-->
 	<style>
@@ -46,19 +47,152 @@
         left: 0;
         top: 0;
       }
+	  .viewButton{
+		position:absolute;
+		width:100px;
+		height:40px;
+		background:white;
+		left:100px;
+	  }
+	  
+	  .infoContainer{
+		width:260px;
+		height:50px;
+		background:rgba(0,0,0,0.7);
+		display: none;
+		border:2px solid gray;
+		border-radius:5px;
+		margin-left:5px;
+	  }
+	  
+	  .infoText{
+		position:absolute;
+		color:white;
+		font-size:20px;
+		left:5px;
+	  }
+	  .buttonContainer{
+		width:50%;
+		height:45px;
+		background:white;
+		position:absolute;
+		bottom:60px;
+		left:25%;
+		border-radius:30px;
+	  }
+	  .buttonStyle{
+		position:absolute;
+		width:25%;
+		height:100%;
+		background:white;
+		cursor:pointer;
+		font-size:20px;
+		border:0px;
+		outline:none;
+		border-radius:30px;
+		top:0px;
+		color:#53446a;
+	  }
+	  
+	  .buttonSelect{
+		background:#53446a;
+		color:white;
+	  }
+	  
+	  .iconStyle{
+		position:relative;
+		margin-left:27%;
+		width:30px;
+		top:7px;
+		cursor:pointer;
+	  }
+	  
+	  .buttonLabelStyle{
+		position:relative;
+		margin-left:5px;
+		cursor:pointer;
+	  }
+	  
+	  .takeChallangeButton{
+		position:absolute;
+		
+	  }
     </style>
 	
 	
 </head>
 <body>
+<div id="container1" class="infoContainer">
+	<label class="infoText">Hello, Welcome to ValueClub. How may i help you ?</label>
+</div>
+
+<!-- <img class="takeChallangeButton" src="./icon/TakeChallenge.gif"/> -->
+
+<div class="buttonContainer">
+	<div id="lobby" onclick="buttonClick(this)" style="left:-1px;" class="buttonStyle buttonSelect" value="LOBBY">
+		<img src="./icon/trans.png" class="iconStyle"/>
+		<label class="buttonLabelStyle" >LOBBY</label>
+	</div>
+	<div id="gamezone" onclick="buttonClick(this)" style="left:25%;" class="buttonStyle" value="GAMEZONE">
+		<img src="./icon/trans_unselected.png" class="iconStyle" style="margin-left:17%;"/>
+		<label class="buttonLabelStyle" >GAMEZONE</label>
+	</div>
+	<div id="auditorium" onclick="buttonClick(this)" style="left:50%;" class="buttonStyle" value="AUDITORIUM">
+		<img src="./icon/trans_unselected.png" class="iconStyle" style="margin-left:15%;"/>
+		<label class="buttonLabelStyle" >AUDITORIUM</label>
+	</div>
+	<div id="photobooth" onclick="buttonClick(this)" style="left:75%;" class="buttonStyle" value="PHOTOBOOTH">
+		<img src="./icon/trans_unselected.png" class="iconStyle" style="margin-left:14%;"/>
+		<label class="buttonLabelStyle" >PHOTOBOOTH</label>
+	</div>
+</div>
 
 <script>
 
-	const panorama1 = new PANOLENS.ImagePanorama( 'img2.jpeg' );
-	const panorama2 = new PANOLENS.ImagePanorama( 'img3.jpeg' );
-	const panorama3 = new PANOLENS.ImagePanorama( 'img4.jpeg' );
-	const panorama4 = new PANOLENS.ImagePanorama( 'img5.jpeg' );
-	const panorama5 = new PANOLENS.ImagePanorama( 'img6.jpeg' );
+
+	function onEnter ( event ) {
+		//console.log("-------onEnter--------");
+	}
+
+    function onProgress ( event ) {
+        progress = event.progress.loaded / event.progress.total * 100;
+        if ( progress === 100 ) {
+			//console.log(event.target);
+			setTimeout(function(){
+				ResetCameraView();
+				ChangeSelectButton(event.target.name);
+			} , 600);
+        }
+    }
+	
+	function ResetCameraView()
+	{
+		viewer.setCameraFov(60);
+		viewer.camera.position.x = 90;
+		viewer.camera.position.y = 0;
+		viewer.camera.position.z = 1;
+	}
+
+	const panorama1 = new PANOLENS.ImagePanorama( './360/At Reception 1.jpg' );
+	const panorama2 = new PANOLENS.ImagePanorama( './360/At Statue.jpg' );
+	const panorama3 = new PANOLENS.ImagePanorama( './360/At Photobooth.jpg' );
+	const panorama4 = new PANOLENS.ImagePanorama( './360/At Entry 1.jpg' );
+	const panorama5 = new PANOLENS.ImagePanorama( './360/At Game Zone 1.jpg' );
+	panorama1.addEventListener( 'progress', onProgress );
+	panorama1.addEventListener( 'enter', onEnter );
+	panorama1.name="reception";
+	panorama2.addEventListener( 'progress', onProgress );
+	panorama2.addEventListener( 'enter', onEnter );
+	panorama2.name="auditorium";
+	panorama3.addEventListener( 'progress', onProgress );
+	panorama3.addEventListener( 'enter', onEnter );
+	panorama3.name="photobooth";
+	panorama4.addEventListener( 'progress', onProgress );
+	panorama4.addEventListener( 'enter', onEnter );
+	panorama4.name="lobby";
+	panorama5.addEventListener( 'progress', onProgress );
+	panorama5.addEventListener( 'enter', onEnter );
+	panorama5.name="gamezone";
 	
 	const viewer = new PANOLENS.Viewer({ enableReticle: false, output: 'console', viewIndicator: true, autoRotate: false, autoRotateSpeed: 2, autoRotateActivationDuration: 5000, dwellTime: 1000 ,cameraFov : 60});
 	viewer.add( panorama4 );
@@ -66,20 +200,77 @@
 	viewer.add( panorama3 );
 	viewer.add( panorama1 );
 	viewer.add( panorama5 );
+
+	panorama4.link( panorama1, new THREE.Vector3( 4783.68, -1443.15, -6.69 ));
+	panorama4.link( panorama2, new THREE.Vector3( 4977.43, -448.84, 8.82));
+	panorama4.link( panorama5, new THREE.Vector3( 3525.71, 1449.52, 3228.12 ));
+	panorama4.link( panorama3, new THREE.Vector3( 3640.83, 1589.76, -3023.66 ));
 	
-	panorama1.setLinkingImage('./icon3.png',400);
-	panorama2.setLinkingImage('./icon3.png',400);
-	panorama3.setLinkingImage('./icon3.png',400);
-	panorama4.setLinkingImage('./icon3.png',400);
-	panorama5.setLinkingImage('./icon3.png',400);
+	var infospot1 = new PANOLENS.Infospot( 250, PANOLENS.DataImage.Info );
+    infospot1.position.set( 3971.87, -84.21, -3024.09 );
+    infospot1.addHoverElement( document.getElementById( 'container1' ), 60 );
+	panorama4.add( infospot1 );
 	
-	panorama4.link( panorama1, new THREE.Vector3( 4940.43, -697.74, 152.71 ));
-	panorama1.link( panorama3, new THREE.Vector3( 3813.58, -507.79, -3178.66 ));
-	panorama3.link( panorama1, new THREE.Vector3( -2712.64, -704.11, -4129.74 ));
-	panorama1.link( panorama5, new THREE.Vector3( 4005.01, -522.60, 2939.48 ));
-	panorama5.link( panorama1, new THREE.Vector3( -2642.63, -717.95, 4173.26 ));
-	panorama1.link( panorama2, new THREE.Vector3( 4967.75, 240.75, -434.82 ));
-	panorama2.link( panorama3, new THREE.Vector3( 2072.27, -682.25, 4492.33 ));
+	var infospot2 = new PANOLENS.Infospot( 250, PANOLENS.DataImage.Info );
+    infospot2.position.set( 3969.22, -19.10, 3031.42 );
+    infospot2.addHoverElement( document.getElementById( 'container1' ), 60 );
+	panorama4.add( infospot2 );
+	
+	var infospot3 = new PANOLENS.Infospot( 500, "./icon/TakeChallenge.gif" );
+    infospot3.position.set( 4794.46, 1400.20, 32.16 );
+	panorama5.add( infospot3 );
+	
+	var infospot4 = new PANOLENS.Infospot( 1800, "./icon/Leaderboard.png" );
+    infospot4.position.set( 3500.84, 3058.02, 6.96 );
+	panorama5.add( infospot4 );
+
+	var infospot5 = new PANOLENS.Infospot( 600, "./icon/bollywood1.jpg" );
+    infospot5.position.set( 4629.27, 1280.74, 10.82 );
+	panorama4.add( infospot5 );
+	
+	var infospot6 = new PANOLENS.Infospot( 500, "./icon/Capture.png" );
+    infospot6.position.set( 4786.24, 1420.38, 80.44 );
+	panorama3.add( infospot6 );
+	
+	
+	
+	function ChangeSelectButton(panoName)
+	{
+		$("#"+panoName).trigger("click");
+	}
+	
+	function buttonClick(obj)
+	{
+		$('.buttonStyle').removeClass('buttonSelect');
+		$('.iconStyle').attr('src','./icon/trans_unselected.png');
+		$(obj).addClass('buttonSelect');
+		$("#"+$(obj).attr("id")+" .iconStyle").attr('src','./icon/trans.png');
+		if($(obj).attr("value") == "LOBBY")
+		{
+			viewer.setPanorama( panorama4 , true);
+		}
+		else if($(obj).attr("value") == "GAMEZONE")
+		{
+			viewer.setPanorama( panorama5, true);
+		}
+		else if($(obj).attr("value") == "AUDITORIUM")
+		{
+			viewer.setPanorama( panorama2 , true);
+		}
+		else if($(obj).attr("value") == "PHOTOBOOTH")
+		{
+			viewer.setPanorama( panorama3 , true);
+		}
+		
+	}
+	
+	
+	//panorama1.link( panorama3, new THREE.Vector3( 3813.58, -507.79, -3178.66 ));
+	//panorama3.link( panorama1, new THREE.Vector3( -2712.64, -704.11, -4129.74 ));
+	//panorama1.link( panorama5, new THREE.Vector3( 4005.01, -522.60, 2939.48 ));
+	//panorama5.link( panorama1, new THREE.Vector3( -2642.63, -717.95, 4173.26 ));
+	//panorama1.link( panorama2, new THREE.Vector3( 4967.75, 240.75, -434.82 ));
+	//panorama2.link( panorama3, new THREE.Vector3( 2072.27, -682.25, 4492.33 ));
 	
 	function requestOrientation()
 	{
