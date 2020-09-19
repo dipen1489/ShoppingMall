@@ -56,20 +56,26 @@
 	  }
 	  
 	  .infoContainer{
-		width:260px;
-		height:50px;
-		background:rgba(0,0,0,0.7);
+		width:265px;
+		height:170px;
+		#background:rgba(0,0,0,0.7);
 		display: none;
-		border:2px solid gray;
-		border-radius:5px;
+		#border:2px solid gray;
+		#border-radius:5px;
 		margin-left:5px;
+		background-image: url('./icon/info1.png');
+		background-repeat: no-repeat;
+		background-position: 50% 50%; 
+		background-size: 265px 170px;
 	  }
 	  
 	  .infoText{
 		position:absolute;
-		color:white;
-		font-size:20px;
-		left:5px;
+		color:black;
+		font-size:17px;
+		width:210px;
+		left:35px;
+		top:25px;
 	  }
 	  .buttonContainer{
 		width:50%;
@@ -117,14 +123,57 @@
 		position:absolute;
 		
 	  }
+	  
+	  .nextPrevImgClass{
+		position:absolute;
+		top:49%;
+		cursor:pointer;
+	  }
+	  
+	  .videoStyle{
+		position:absolute;
+		top:45%;
+		cursor:pointer;
+		width:200px;
+		height:120px;
+		display:none;
+	  }
+	  
+	  .timerLabelStyle{
+		position:absolute;
+		bottom:60px;
+		left:50px;
+		width:100px;
+		height:45px;
+		background:#53446a;
+		border-radius:10px;
+		color:white;
+		font-size:20px;
+		padding-left:7px;
+		padding-top:15px;
+	  }
+	  
     </style>
 	
 	
 </head>
 <body>
 <div id="container1" class="infoContainer">
-	<label class="infoText">Hello, Welcome to ValueClub. How may i help you ?</label>
+	<label class="infoText">Welcome to Apollo Value Club Event, it is indeed an honour to have your presence, we hope to extend a wonderful experience!</label>
 </div>
+
+<img class="nextPrevImgClass" style="right:50px;" src="./icon/next.png"/>
+<img class="nextPrevImgClass" style="left:50px;" src="./icon/prev.png"/>
+
+<video id="videoRightId" class="videoStyle" style="right:175px;" controls>
+  <source src="./360/sample.mp4" type="video/mp4">
+</video>
+
+<video id="videoLeftId" class="videoStyle" style="left:175px;" controls>
+  <source src="./360/sample.mp4" type="video/mp4">
+</video>
+
+<label id="timerId" class="timerLabelStyle"></label>
 
 <!-- <img class="takeChallangeButton" src="./icon/TakeChallenge.gif"/> -->
 
@@ -183,7 +232,7 @@
 	panorama1.name="reception";
 	panorama2.addEventListener( 'progress', onProgress );
 	panorama2.addEventListener( 'enter', onEnter );
-	panorama2.name="auditorium";
+	panorama2.name="statue";
 	panorama3.addEventListener( 'progress', onProgress );
 	panorama3.addEventListener( 'enter', onEnter );
 	panorama3.name="photobooth";
@@ -206,18 +255,36 @@
 	panorama4.link( panorama5, new THREE.Vector3( 3525.71, 1449.52, 3228.12 ));
 	panorama4.link( panorama3, new THREE.Vector3( 3640.83, 1589.76, -3023.66 ));
 	
+	panorama1.link( panorama5, new THREE.Vector3( 2670.63, 1616.76, 3896.44 ));
+	panorama1.link( panorama3, new THREE.Vector3( 2807.17, 1907.56, -3665.48 ));
+	panorama1.link( panorama4, new THREE.Vector3( -4532.37, -2100.77, -12.59 ));
+	
+	panorama2.link( panorama5, new THREE.Vector3( 1785.27, 1830.49, -4288.69 ));
+	panorama2.link( panorama3, new THREE.Vector3( 1781.37, 2146.67, 4142.44 ));
+	
+	panorama5.link( panorama2, new THREE.Vector3( -2655.74, -410.07, -4208.13 ));
+	panorama5.link( panorama3, new THREE.Vector3( -4668.06, 1735.95, -320.84 ));
+	panorama5.link( panorama4, new THREE.Vector3( -1878.80, -538.16, 4592.23 ));
+	
+	panorama3.link( panorama5, new THREE.Vector3( -4751.54, 1468.74, 482.20 ));
+	panorama3.link( panorama2, new THREE.Vector3( -2313.64, 21.04, 4424.16 ));
+	panorama3.link( panorama4, new THREE.Vector3( -2158.82, -659.34, -4451.27 ));
+	
 	var infospot1 = new PANOLENS.Infospot( 250, PANOLENS.DataImage.Info );
     infospot1.position.set( 3971.87, -84.21, -3024.09 );
-    infospot1.addHoverElement( document.getElementById( 'container1' ), 60 );
+    infospot1.addHoverElement( document.getElementById( 'container1' ), 100 );
 	panorama4.add( infospot1 );
 	
 	var infospot2 = new PANOLENS.Infospot( 250, PANOLENS.DataImage.Info );
     infospot2.position.set( 3969.22, -19.10, 3031.42 );
-    infospot2.addHoverElement( document.getElementById( 'container1' ), 60 );
+    infospot2.addHoverElement( document.getElementById( 'container1' ), 100 );
 	panorama4.add( infospot2 );
 	
 	var infospot3 = new PANOLENS.Infospot( 500, "./icon/TakeChallenge.gif" );
     infospot3.position.set( 4794.46, 1400.20, 32.16 );
+	infospot3.addEventListener( 'click', function(event){
+        window.open("http://cloudtactsolutions.com/sandbox/car-racing/index.html", "_blank");
+    });
 	panorama5.add( infospot3 );
 	
 	var infospot4 = new PANOLENS.Infospot( 1800, "./icon/Leaderboard.png" );
@@ -230,6 +297,9 @@
 	
 	var infospot6 = new PANOLENS.Infospot( 500, "./icon/Capture.png" );
     infospot6.position.set( 4786.24, 1420.38, 80.44 );
+	infospot6.addEventListener( 'click', function(event){
+        window.open("http://cloudtactsolutions.com/sandbox/photobooth.php", "_blank");
+    });
 	panorama3.add( infospot6 );
 	
 	
@@ -241,6 +311,7 @@
 	
 	function buttonClick(obj)
 	{
+		$(".videoStyle").css("display","none");
 		$('.buttonStyle').removeClass('buttonSelect');
 		$('.iconStyle').attr('src','./icon/trans_unselected.png');
 		$(obj).addClass('buttonSelect');
@@ -255,22 +326,59 @@
 		}
 		else if($(obj).attr("value") == "AUDITORIUM")
 		{
-			viewer.setPanorama( panorama2 , true);
+			//viewer.setPanorama( panorama2 , true);
+			var fovv = 60;
+			setTimeout(function panoZoomEffect(){
+				if(fovv > 30)
+				{
+					fovv = fovv - 1;
+					viewer.setCameraFov(fovv);
+					setTimeout(panoZoomEffect , 10);
+				}
+				else{
+					window.open("http://cloudtactsolutions.com/sandbox/event.php", "_blank");
+					viewer.setCameraFov(60);
+				}
+			}, 10);
+			
+			
 		}
 		else if($(obj).attr("value") == "PHOTOBOOTH")
 		{
 			viewer.setPanorama( panorama3 , true);
+			$(".videoStyle").css("display","block");
 		}
-		
 	}
 	
+	function TimerFunction()
+	{
+		var countDownDate = new Date("Sep 20, 2020 17:00:00").getTime();
+		// Update the count down every 1 second
+		var x = setInterval(function() {
+
+		  // Get today's date and time
+		  var now = new Date().getTime();
+
+		  // Find the distance between now and the count down date
+		  var distance = countDownDate - now;
+
+		  // Time calculations for days, hours, minutes and seconds
+		  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+		  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+		  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+		  // Display the result in the element with id="demo"
+		  document.getElementById("timerId").innerHTML = hours + " : " + minutes + " : " + seconds;
+
+		  // If the count down is finished, write some text
+		  if (distance < 0) {
+			clearInterval(x);
+			//document.getElementById("demo").innerHTML = "EXPIRED";
+		  }
+		}, 1000);
+	}
 	
-	//panorama1.link( panorama3, new THREE.Vector3( 3813.58, -507.79, -3178.66 ));
-	//panorama3.link( panorama1, new THREE.Vector3( -2712.64, -704.11, -4129.74 ));
-	//panorama1.link( panorama5, new THREE.Vector3( 4005.01, -522.60, 2939.48 ));
-	//panorama5.link( panorama1, new THREE.Vector3( -2642.63, -717.95, 4173.26 ));
-	//panorama1.link( panorama2, new THREE.Vector3( 4967.75, 240.75, -434.82 ));
-	//panorama2.link( panorama3, new THREE.Vector3( 2072.27, -682.25, 4492.33 ));
+	TimerFunction();
 	
 	function requestOrientation()
 	{
